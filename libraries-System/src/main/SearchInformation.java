@@ -63,6 +63,7 @@ public class SearchInformation extends JFrame {
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dispose();
+				
 			}
 		});
 		btnNewButton.setBounds(331, 228, 93, 23);

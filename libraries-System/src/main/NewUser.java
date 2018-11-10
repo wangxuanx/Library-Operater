@@ -8,6 +8,7 @@ import javax.swing.border.EmptyBorder;
 
 import java.awt.event.ActionListener;
 import java.io.*;
+import java.sql.*;
 import java.awt.event.ActionEvent;
 import java.awt.Color;
 import java.awt.Toolkit;
@@ -42,6 +43,7 @@ public class NewUser extends JFrame {
 	 * Create the frame.
 	 */
 	public NewUser() {
+		Connection con = DBUTill.open();
 		setIconImage(Toolkit.getDefaultToolkit().getImage(NewUser.class.getResource("/main/icon.png")));
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setResizable(false);
@@ -87,14 +89,28 @@ public class NewUser extends JFrame {
 				str1 = textField.getText();
 				str2 = textField_1.getText();
 				str3 = textField_2.getText();
+				
+				String sql = "insert into user (name, password, owe, depart, lab_id) values(?,?,0,?,1)";
 				if(str1.equals("") || str2.equals("") || str3.equals("")) {
 					JOptionPane.showMessageDialog(null, "请在空白对话框中填入信息", "信息输入有误", JOptionPane.ERROR_MESSAGE);
 				}
 				if(!str1.equals("") && !str2.equals("") && !str3.equals("")) {
-					reFreshData(str1, str2, str3);
-					JOptionPane.showMessageDialog(null, "  姓名: "+str1+"\n"+"  系别: "+str2+"\n"+"  借阅证号: "+str3, "注册借阅证成功", JOptionPane.CLOSED_OPTION);
-					dispose();
-					TopFram.refreshTop();
+					try {
+						PreparedStatement pstmt = (PreparedStatement) con.prepareStatement(sql);
+						pstmt.setString(1, str1);
+						pstmt.setString(3, str2);
+						pstmt.setString(2, str3);
+						int i = pstmt.executeUpdate();
+						pstmt.close();
+						con.close();
+						JOptionPane.showMessageDialog(null, "  姓名: "+str1+"\n"+"  系别: "+str2+"\n"+"  借阅证号: "+str3, "注册借阅证成功", JOptionPane.CLOSED_OPTION);
+						dispose();
+						TopFram.refreshTop();
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}			
+					
 				}
 			}
 		});
@@ -111,26 +127,6 @@ public class NewUser extends JFrame {
 		});
 		button_1.setBounds(241, 200, 93, 23);
 		contentPane.add(button_1);
-	}
-	
-	void reFreshData(String str1, String str2, String str3) {          //刷新文件中信息 
-		File DATA = new File(filePath);         //创建储存信息的文件
-		try {
-			if(!DATA.exists()) {
-			DATA.createNewFile();
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-		try {
-			FileOutputStream out = new FileOutputStream(filePath);
-			PrintStream ps = new PrintStream(out);
-			ps.println(str1+" "+str2+" "+str3+"\n");
-			ps.close();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
 	}
 
 }

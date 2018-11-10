@@ -2,12 +2,15 @@ package main;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
+import java.awt.Graphics;
+import java.awt.Image;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
 import javax.swing.JTextPane;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -16,6 +19,7 @@ import java.awt.Toolkit;
 public class StudFram extends JFrame {
 
 	private JPanel contentPane;
+	
 
 	/**
 	 * Launch the application.
@@ -37,6 +41,8 @@ public class StudFram extends JFrame {
 	 * Create the frame.
 	 */
 	public StudFram() {
+		TopFram top = new TopFram();
+		
 		setIconImage(Toolkit.getDefaultToolkit().getImage(StudFram.class.getResource("/main/icon.png")));
 		setResizable(false);
 		setTitle("\u5B66\u751F\u64CD\u4F5C");
@@ -63,7 +69,7 @@ public class StudFram extends JFrame {
 		lblNewLabel.setBounds(93, 76, 54, 15);
 		contentPane.add(lblNewLabel);
 		
-		JLabel label_3 = new JLabel("1");
+		JLabel label_3 = new JLabel(top.getStr1());
 		label_3.setBounds(93, 26, 54, 15);
 		contentPane.add(label_3);
 		
@@ -84,6 +90,7 @@ public class StudFram extends JFrame {
 		contentPane.add(button);
 		
 		JButton button_1 = new JButton("\u6CE8\u9500\u8D26\u6237");
+		button_1.setOpaque(false);
 		button_1.setContentAreaFilled(false);
 		button_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
